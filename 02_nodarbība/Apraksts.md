@@ -1,3 +1,3 @@
 Sarakstu veidošana
-Iepazinām GITHUB un VS code, lai vienā raksītu un otrā uzglabātu datus.
+Iepazinām GITHUB un VS code, lai vienā rakstītu un otrā uzglabātu datus.
 
