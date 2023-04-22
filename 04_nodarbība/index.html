@@ -1,4 +1,29 @@
-<html></html>
-<body>
-  <p>čauaaaaaaaaaa</p>
-</body>
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      console.log("Pirmā izruka no head elementa.");
+    </script>
+  </head>
+
+  <body>
+    <script>
+      console.log("Izdruka no body elementa.");
+    </script>
+
+    <h2>My First JavaScript</h2>
+
+    <button
+      type="button"
+      onclick="document.getElementById('demo').innerHTML = Date()"
+    >
+      Click me to display Date and Time.
+    </button>
+
+    <p id="demo"></p>
+
+    <button type="button" onclick="myFunction()">Try it</button>
+
+    <script src="JS.js/js.js"></script>
+  </body>
+</html>
