@@ -10,31 +10,8 @@
 
     <p id="demo"></p>
 
-    <script>
-      var ms = Date.now();
-      console.log(ms);
-
-      console.log(typeof 16);
-      console.log(typeof "Volvo");
-      let x = 16 + "Volvo";
-      console.log(typeof x);
-
-      console.log("Paragrāfa saturs pirms izmaiņām: ");
-      console.log(document.getElementById("demo").innerHTML);
-
-      ms = Date.now();
-      console.log(ms);
-      document.getElementById("demo").innerHTML = x;
-      console.log("Paragrāfa saturs pēc izmaiņām: ");
-      console.log(document.getElementById("demo").innerHTML);
-
-      ms = Date.now();
-      console.log(ms);
-    </script>
-
-    <script>
-      let x = 16 + "Volvo";
-      document.getElementById("demo").innerHTML = x;
-    </script>
+    <script src="js/array.js"></script>
+    <script src="js/var_let_cons.js"></script>
+    <script src="js/time_string_comment_variable_const.js"></script>
   </body>
 </html>
