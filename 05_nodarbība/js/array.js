@@ -9,3 +9,9 @@ var coord = [
       ];
       console.log(coord[0]);
       console.log(coord[0][0]);
+
+
+
+
+      const fruits = ["Banana", "Orange", "Apple", "Mango"];
+      let fruit = fruits.pop();
