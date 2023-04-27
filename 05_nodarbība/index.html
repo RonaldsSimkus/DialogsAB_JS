@@ -1,17 +1,40 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <h1>JavaScript Variables</h1>
+    <h2>JavaScript</h2>
 
-    <p>In this example, x, y, and z are variables.</p>
+    <p>
+      When adding a number and a string, JavaScript will treat the number as a
+      string.
+    </p>
 
     <p id="demo"></p>
 
     <script>
-      var x = 5;
-      var y = 6;
-      var z = x + y;
-      document.getElementById("demo").innerHTML = "The value of z is: " + z;
+      var ms = Date.now();
+      console.log(ms);
+
+      console.log(typeof 16);
+      console.log(typeof "Volvo");
+      let x = 16 + "Volvo";
+      console.log(typeof x);
+
+      console.log("Paragrāfa saturs pirms izmaiņām: ");
+      console.log(document.getElementById("demo").innerHTML);
+
+      ms = Date.now();
+      console.log(ms);
+      document.getElementById("demo").innerHTML = x;
+      console.log("Paragrāfa saturs pēc izmaiņām: ");
+      console.log(document.getElementById("demo").innerHTML);
+
+      ms = Date.now();
+      console.log(ms);
+    </script>
+
+    <script>
+      let x = 16 + "Volvo";
+      document.getElementById("demo").innerHTML = x;
     </script>
   </body>
 </html>
