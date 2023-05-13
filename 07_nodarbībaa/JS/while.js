@@ -1,7 +1,28 @@
+//console.log("Hello World!");
+
 let text = "";
-let i = 0;
-while (i < 20) {
-  if (i % 2 == 0) text += "<br>" + i;
+let i = 1;
+while (i <= 20) {
+  console.log("i: " + i);
+  console.log("i%2: " + (i % 2));
+  if (i % 2 == 0) {
+    text += "<br>" + i;
+  }
   i++;
 }
-document.getElementById("count").innerHTML = text;
+
+document.getElementById("demo_while").innerHTML = text;
+
+text = "";
+i = 1;
+while (i <= 200) {
+  if (i < 10) {
+    text += "<br>" + 0 + 0 + i; // text = text + "<br>" + i;
+  } else if (i < 100) {
+    text += "<br>" + 0 + i;
+  } else {
+    text += "<br>" + i;
+  }
+  i++; // i++; // i = i + 1 //
+}
+document.getElementById("demo_while").innerHTML = text;
