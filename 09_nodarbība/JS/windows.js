@@ -30,15 +30,14 @@ const height =
   document.body.clientHeight;
 
 let features = "height=600,width=800",
-  url = "https://www.javascripttutorial.net/javascript-bom/javascript-window/";
+  //url = 'https://www.javascripttutorial.net/javascript-bom/javascript-window/';
+  url = "http://127.0.0.1:5500";
 
-/*
-setTimeout(() => {
-    //window.open('https://www.javascripttutorial.net', 'about')
-    //window.open('http://127.0.0.1:5500', 'about')
-    let jsWindow = window.open(url, 'about', features);
-}, 20000);
-*/
+//setTimeout(() => {
+//window.open('https://www.javascripttutorial.net', 'about')
+//window.open('http://127.0.0.1:5500', 'about')
+//let jsWindow = window.open(url, 'about', features);
+//}, 20000);
 
 /*
 setTimeout(() => {
@@ -89,4 +88,49 @@ function cancelAlert_1() {
 function cancelAlert_2() {
   console.log(timeoutID_2);
   console.log(clearTimeout(timeoutID_2));
+}
+
+var intervalID_1;
+//intervalID_1 = setInterval(console.log, 1000,'Viena sekunde no mūsu dzīves ir pagājusi ...');
+console.log(intervalID_1);
+
+let intervalID;
+
+function toggleColor() {
+  let e = document.getElementById("flashtext");
+  console.log(e);
+  console.log(e.style);
+  console.log(e.style.color);
+  console.log(e.style.color == "red");
+  console.log(e.style.color == "red" ? "blue" : "red");
+  e.style.color = e.style.color == "red" ? "blue" : "red";
+  console.log(e.style.color);
+  console.log("\n");
+}
+
+function stop() {
+  clearInterval(intervalID);
+}
+
+function start() {
+  intervalID = setInterval(toggleColor, 1000);
+}
+
+urlParamsString = "?q=v%c4%81rds&s=0&g=5&r=1100"; //location.search;
+urlParams = new URLSearchParams(urlParamsString);
+
+for (const [key, value] of urlParams) {
+  console.log(`${key}:${value}`);
+}
+
+for (const key of urlParams.keys()) {
+  console.log(key);
+}
+
+for (const value of urlParams.values()) {
+  console.log(value);
+}
+
+for (const entry of urlParams.entries()) {
+  console.log(entry);
 }
