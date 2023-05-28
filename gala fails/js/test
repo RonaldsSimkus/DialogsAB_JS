@@ -1,0 +1,52 @@
+// Mainīgie
+let skaits = 10;
+const vards = "John";
+
+// Masīvs
+let augli = ["ābols", "banāns", "apelsīns"];
+
+// Objekts
+let persona = {
+  vards: "Anna",
+  vecums: 25,
+  adrese: "Rīga",
+};
+
+// Nosacījuma operators (if)
+let skaitlis = 7;
+if (skaitlis > 5) {
+  console.log("Skaitlis ir lielāks par 5");
+} else {
+  console.log("Skaitlis ir mazāks vai vienāds ar 5");
+}
+
+// Cikls (for)
+for (let i = 0; i < 5; i++) {
+  console.log(i);
+}
+
+// Funkcija
+function sasveicinat(vards) {
+  console.log("Sveiki, " + vards + "!");
+}
+
+sasveicinat("Laura");
+
+// Notikumu klausītājs (EventListener)
+const pogas = document.querySelector("#pogas");
+
+pogas.addEventListener("click", function () {
+  console.log("Poga tika nospiesta!");
+});
+
+// Vienības tests
+function sum(a, b) {
+  return a + b;
+}
+
+// Vienības tests
+if (sum(2, 3) === 5) {
+  console.log("Testēšana veiksmīga");
+} else {
+  console.log("Testēšana neveiksmīga");
+}
