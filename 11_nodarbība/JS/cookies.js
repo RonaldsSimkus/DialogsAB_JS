@@ -1,4 +1,4 @@
-// max cookie size - 4096 bytes (4 KB) - for nname + value
+// max cookie size - 4096 bytes (4 KB) - for name + value
 /*
 1. Cookie nolasīšana
 1.1. Cookie filtrēšana (atlasīšana) (domain + path; hostname:port\path1\path2 būs redzams iekš hostname:port\path1\path2 un hostname:port\path1\path2\path3 utt., bet nebūs redzams iekš hostname:port\path1)
@@ -26,7 +26,6 @@ display("username_2", "admin_2");
 //console.log("cookie vērtība: "+str);
 
 // https://stackoverflow.com/questions/13154552/how-can-i-set-a-cookie-with-expire-time
-
 function display(cookie_name, cookie_value, cookie_expire_time_sec) {
   var now = new Date();
   var time = now.getTime();
