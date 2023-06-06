@@ -22,3 +22,18 @@ function breathAnimation() {
 }
 
 setInterval(breathAnimation, totalTime);
+
+const btn = document.querySelector("button");
+const txt = document.querySelector("p");
+
+btn.addEventListener("click", updateBtn);
+
+var isOn = false;
+
+const button = document.querySelector("#button");
+
+const disableButton = () => {
+  button.disabled = true;
+};
+
+button.addEventListener("click", disableButton);
