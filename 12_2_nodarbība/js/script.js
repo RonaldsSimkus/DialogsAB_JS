@@ -14,7 +14,7 @@ const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
   size: 10,
-  speed: 4,
+  speed: 10,
   dx: 4,
   dy: -4,
 };
@@ -221,37 +221,3 @@ document.addEventListener("keyup", keyUp);
 // Rules and close event handlers
 rulesBtn.addEventListener("click", () => rules.classList.add("show"));
 closeBtn.addEventListener("click", () => rules.classList.remove("show"));
-
-var imgObj;
-var animate = null;
-function init() {
-  imgObj = document.getElementById("myImage");
-  imgObj.style.position = "relative";
-  imgObj.style.left = "0px";
-}
-
-startStopImg = function () {
-  if (animate != null) {
-    stop();
-  } else {
-    moveRight();
-  }
-  change();
-};
-
-function moveRight() {
-  imgObj.style.left = parseInt(imgObj.style.left) + 10 + "px";
-  animate = setTimeout(moveRight, 50);
-}
-
-change = function () {
-  var elem = document.getElementById("startButton");
-  if (elem.value == "Stop") elem.value = "Start";
-  else elem.value = "Stop";
-};
-
-stop = function () {
-  clearTimeout(animate);
-  animate = null;
-};
-window.onload = init();
