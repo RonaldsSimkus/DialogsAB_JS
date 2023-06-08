@@ -14,7 +14,7 @@ const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
   size: 10,
-  speed: 10,
+  speed: 5,
   dx: 4,
   dy: -4,
 };
