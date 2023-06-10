@@ -9,16 +9,16 @@ let score = 0;
 let gameOver = false;
 
 const brickRowCount = 9;
-const brickColumnCount = 5;
+const brickColumnCount = 7;
 
 // Create ball props
 const ball = {
   x: canvas.width / 2,
   y: canvas.height / 2,
   size: 10,
-  speed: 1,
-  dx: 1,
-  dy: -1,
+  speed: 2,
+  dx: 2,
+  dy: -2,
 };
 
 // Create paddle props
@@ -27,7 +27,7 @@ const paddle = {
   y: canvas.height - 20,
   w: 80,
   h: 10,
-  speed: 3,
+  speed: 7,
   dx: 0,
 };
 
@@ -124,7 +124,7 @@ function moveBall() {
     ball.y + ball.size > paddle.y
   ) {
     ball.dy = -ball.speed;
-    ball.speed += 0.1;
+    ball.speed += 1;
     ball.dx = ball.dx > 0 ? ball.speed : -ball.speed;
     ball.dy = -ball.speed;
   }
@@ -241,9 +241,9 @@ startOverBtn.addEventListener("click", function () {
   // Reset the ball properties
   ball.x = canvas.width / 2;
   ball.y = canvas.height / 2;
-  ball.speed = 1; // Reset to initial speed
-  ball.dx = 1; // Reset to initial dx
-  ball.dy = -1; // Reset to initial dy
+  ball.speed = 2; // Reset to initial speed
+  ball.dx = 2; // Reset to initial dx
+  ball.dy = -2; // Reset to initial dy
 
   // Reset the paddle properties
   paddle.x = canvas.width / 2 - 40;

@@ -28,7 +28,7 @@ canvas {
   cursor: pointer;
   border: 0;
   padding: 10px 20px;
-  background: #000;
+  background: #000000;
   color: #fff;
   border-radius: 5px;
 }
@@ -38,7 +38,7 @@ canvas {
 }
 
 .btn:hover {
-  background: #222;
+  background: #066403;
 }
 
 .btn:active {
@@ -75,6 +75,7 @@ canvas {
   top: calc(50% + 100px);
   transform: translate(-50%, -50%);
   display: none; /* Initially hidden */
+
 }
 
 #game-over {
@@ -84,4 +85,5 @@ canvas {
   top: calc(50% + 50px); /* Moved down by 20px */
   transform: translate(-50%, -50%);
   text-align: center;
+  color: #000001;
 }

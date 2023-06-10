@@ -1,39 +1,37 @@
-const container = document.getElementById("container");
-const text = document.getElementById("text");
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var ballRadius = 10;
+var x = canvas.width / 2;
+var y = canvas.height - 30;
+var dx = 2;
+var dy = -2;
+var color = "green";
 
-const totalTime = 7500;
-const breatheTime = (totalTime / 5) * 2;
-const holdTime = totalTime / 5;
-
-breathAnimation();
-
-function breathAnimation() {
-  text.innerText = "Breathe In!";
-  container.className = "container grow";
-
-  setTimeout(() => {
-    text.innerText = "Hold";
-
-    setTimeout(() => {
-      text.innerText = "Breathe Out!";
-      container.className = "container shrink";
-    }, holdTime);
-  }, breatheTime);
+function drawBall(contact) {
+  ctx.beginPath();
+  ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+  color = contact === true ? (color === "green" ? "pink" : "green") : color;
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.closePath();
 }
 
-setInterval(breathAnimation, totalTime);
+function draw() {
+  var contact = false;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-const btn = document.querySelector("button");
-const txt = document.querySelector("p");
+  if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+    dx = -dx;
+    contact = true;
+  }
+  if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+    dy = -dy;
+    contact = true;
+  }
+  drawBall(contact);
 
-btn.addEventListener("click", updateBtn);
+  x += dx;
+  y += dy;
+}
 
-var isOn = false;
-
-const button = document.querySelector("#button");
-
-const disableButton = () => {
-  button.disabled = true;
-};
-
-button.addEventListener("click", disableButton);
+setInterval(draw, 10);
