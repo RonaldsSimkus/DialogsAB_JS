@@ -1,113 +1,267 @@
-// DOM Elements
-const time = document.getElementById("time"),
-  greeting = document.getElementById("greeting"),
-  name = document.getElementById("name"),
-  focus = document.getElementById("focus");
+const rulesBtn = document.getElementById("rules-btn");
+const closeBtn = document.getElementById("close-btn");
+const rules = document.getElementById("rules");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const startOverBtn = document.getElementById("start-over-btn");
 
-// Options
-const showAmPm = true;
+let score = 0;
+let gameOver = false;
 
-// Show Time
-function showTime() {
-  let today = new Date(),
-    hour = today.getHours(),
-    min = today.getMinutes(),
-    sec = today.getSeconds();
+const brickRowCount = 9;
+const brickColumnCount = 5;
 
-  // Set AM or PM
-  const amPm = hour >= 12 ? "PM" : "AM";
+// Create ball props
+const ball = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+  size: 10,
+  speed: 1,
+  dx: 1,
+  dy: -1,
+};
 
-  // 12hr Format
-  hour = hour % 12 || 12;
+// Create paddle props
+const paddle = {
+  x: canvas.width / 2 - 40,
+  y: canvas.height - 20,
+  w: 80,
+  h: 10,
+  speed: 3,
+  dx: 0,
+};
 
-  // Output Time
-  time.innerHTML = `${hour}<span>:</span>${addZero(min)}<span>:</span>${addZero(
-    sec
-  )} ${showAmPm ? amPm : ""}`;
+// Create brick props
+const brickInfo = {
+  w: 70,
+  h: 20,
+  padding: 10,
+  offsetX: 45,
+  offsetY: 60,
+  visible: true,
+};
 
-  setTimeout(showTime, 1000);
-}
-
-// Add Zeros
-function addZero(n) {
-  return (parseInt(n, 10) < 10 ? "0" : "") + n;
-}
-
-// Set Background and Greeting
-function setBgGreet() {
-  let today = new Date(),
-    hour = today.getHours();
-
-  if (hour < 12) {
-    // Morning
-    document.body.style.backgroundImage =
-      "url('https://i.ibb.co/7vDLJFb/morning.jpg')";
-    greeting.textContent = "Good Morning, ";
-  } else if (hour < 18) {
-    // Afternoon
-    document.body.style.backgroundImage =
-      "url('https://i.ibb.co/3mThcXc/afternoon.jpg')";
-    greeting.textContent = "Good Afternoon, ";
-  } else {
-    // Evening
-    document.body.style.backgroundImage =
-      "url('https://i.ibb.co/924T2Wv/night.jpg')";
-    greeting.textContent = "Good Evening, ";
-    document.body.style.color = "white";
+// Create bricks
+const bricks = [];
+for (let i = 0; i < brickRowCount; i++) {
+  bricks[i] = [];
+  for (let j = 0; j < brickColumnCount; j++) {
+    const x = i * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
+    const y = j * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
+    bricks[i][j] = { x, y, ...brickInfo };
   }
 }
 
-// Get Name
-function getName() {
-  if (localStorage.getItem("name") === null) {
-    name.textContent = "[Enter Name]";
-  } else {
-    name.textContent = localStorage.getItem("name");
+// Draw ball on canvas
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
+  ctx.fillStyle = "#0095dd";
+  ctx.fill();
+  ctx.closePath();
+}
+
+// Draw paddle on canvas
+function drawPaddle() {
+  ctx.beginPath();
+  ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
+  ctx.fillStyle = "#0095dd";
+  ctx.fill();
+  ctx.closePath();
+}
+
+// Draw score oon canvas
+function drawScore() {
+  ctx.font = "20px Arial";
+  ctx.fillText(`Score: ${score}`, canvas.width - 100, 30);
+}
+
+// Draw bricks on canvas
+function drawBricks() {
+  bricks.forEach((column) => {
+    column.forEach((brick) => {
+      ctx.beginPath();
+      ctx.rect(brick.x, brick.y, brick.w, brick.h);
+      ctx.fillStyle = brick.visible ? "#0095dd" : "transparent";
+      ctx.fill();
+      ctx.closePath();
+    });
+  });
+}
+
+// Move paddle on canvas
+function movePaddle() {
+  paddle.x += paddle.dx;
+
+  // Wall detection
+  if (paddle.x + paddle.w > canvas.width) {
+    paddle.x = canvas.width - paddle.w;
+  }
+
+  if (paddle.x < 0) {
+    paddle.x = 0;
   }
 }
 
-// Set Name
-function setName(e) {
-  if (e.type === "keypress") {
-    // Make sure enter is pressed
-    if (e.which == 13 || e.keyCode == 13) {
-      localStorage.setItem("name", e.target.innerText);
-      name.blur();
+// Move ball on canvas
+function moveBall() {
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  // Wall collision (right/left)
+  if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
+    ball.dx *= -1;
+  }
+
+  // Wall collision (top/bottom)
+  if (ball.y + ball.size > canvas.height || ball.y - ball.size < 0) {
+    ball.dy *= -1;
+  }
+
+  if (
+    ball.x - ball.size > paddle.x &&
+    ball.x + ball.size < paddle.x + paddle.w &&
+    ball.y + ball.size > paddle.y
+  ) {
+    ball.dy = -ball.speed;
+    ball.speed += 0.1;
+    ball.dx = ball.dx > 0 ? ball.speed : -ball.speed;
+    ball.dy = -ball.speed;
+  }
+
+  // Brick collision
+  bricks.forEach((column) => {
+    column.forEach((brick) => {
+      if (brick.visible) {
+        if (
+          ball.x - ball.size > brick.x && // left brick side check
+          ball.x + ball.size < brick.x + brick.w && // right brick side check
+          ball.y + ball.size > brick.y && // top brick side check
+          ball.y - ball.size < brick.y + brick.h // bottom brick side check
+        ) {
+          ball.dy *= -1;
+          brick.visible = false;
+
+          increaseScore();
+        }
+      }
+    });
+  });
+
+  // Hit bottom wall - Lose
+  if (ball.y + ball.size > canvas.height) {
+    gameOver = true;
+    gameOverDisplay();
+  }
+}
+
+// Increase score
+function increaseScore() {
+  score++;
+
+  if (score % (brickRowCount * brickRowCount) === 0) {
+    showAllBricks();
+  }
+}
+
+// Make all bricks appear
+function showAllBricks() {
+  bricks.forEach((column) => {
+    column.forEach((brick) => (brick.visible = true));
+  });
+}
+
+// Draw everything
+function draw() {
+  // clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  drawBall();
+  drawPaddle();
+  drawScore();
+  drawBricks();
+}
+
+// Update canvas drawing and animation
+function update() {
+  if (gameOver) return;
+
+  movePaddle();
+  moveBall();
+
+  // Draw everything
+  draw();
+
+  requestAnimationFrame(update);
+}
+
+update();
+
+// Keydown event
+function keyDown(e) {
+  if (e.key === "Right" || e.key === "ArrowRight") {
+    paddle.dx = paddle.speed;
+  } else if (e.key === "Left" || e.key === "ArrowLeft") {
+    paddle.dx = -paddle.speed;
+  }
+}
+
+// Keyup event
+function keyUp(e) {
+  if (
+    e.key === "Right" ||
+    e.key === "ArrowRight" ||
+    e.key === "Left" ||
+    e.key === "ArrowLeft"
+  ) {
+    paddle.dx = 0;
+  }
+}
+
+// Keyboard event handlers
+document.addEventListener("keydown", keyDown);
+document.addEventListener("keyup", keyUp);
+
+// Rules and close event handlers
+rulesBtn.addEventListener("click", () => rules.classList.add("show"));
+closeBtn.addEventListener("click", () => rules.classList.remove("show"));
+
+function gameOverDisplay() {
+  document.getElementById("game-over").style.display = "block";
+  startOverBtn.style.display = "block";
+}
+
+startOverBtn.addEventListener("click", function () {
+  // Hide the 'Start Over' button
+  startOverBtn.style.display = "none";
+
+  // Hide the 'GAME OVER' message
+  document.getElementById("game-over").style.display = "none";
+
+  // Reset the ball properties
+  ball.x = canvas.width / 2;
+  ball.y = canvas.height / 2;
+  ball.speed = 1; // Reset to initial speed
+  ball.dx = 1; // Reset to initial dx
+  ball.dy = -1; // Reset to initial dy
+
+  // Reset the paddle properties
+  paddle.x = canvas.width / 2 - 40;
+  paddle.dx = 0;
+
+  // Make all bricks visible again
+  for (let i = 0; i < brickRowCount; i++) {
+    for (let j = 0; j < brickColumnCount; j++) {
+      bricks[i][j].visible = true;
     }
-  } else {
-    localStorage.setItem("name", e.target.innerText);
   }
-}
 
-// Get Focus
-function getFocus() {
-  if (localStorage.getItem("focus") === null) {
-    focus.textContent = "[Enter Focus]";
-  } else {
-    focus.textContent = localStorage.getItem("focus");
-  }
-}
+  // Reset the score
+  score = 0;
 
-// Set Focus
-function setFocus(e) {
-  if (e.type === "keypress") {
-    // Make sure enter is pressed
-    if (e.which == 13 || e.keyCode == 13) {
-      localStorage.setItem("focus", e.target.innerText);
-      focus.blur();
-    }
-  } else {
-    localStorage.setItem("focus", e.target.innerText);
-  }
-}
+  // Set game over flag to false
+  gameOver = false;
 
-name.addEventListener("keypress", setName);
-name.addEventListener("blur", setName);
-focus.addEventListener("keypress", setFocus);
-focus.addEventListener("blur", setFocus);
-
-// Run
-showTime();
-setBgGreet();
-getName();
-getFocus();
+  // Start the game again
+  update();
+});
